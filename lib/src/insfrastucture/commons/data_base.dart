@@ -7,8 +7,8 @@ class DataBase {
     const Category(id: 2, categoryName: 'banee'),
   ];
 
-  static List<ItemDeatel> itemDeatels = <ItemDeatel>[
-    ItemDeatel(id: 1, itemDeatelName: 'babaee'),
-    ItemDeatel(id: 2, itemDeatelName: 'moxwzz'),
+  static List<ItemDeatel> itemDeatel = <ItemDeatel>[
+    ItemDeatel(id: 1, itemTitle: 'babaee', price: 10),
+    ItemDeatel(id: 2, itemTitle: 'moxwzz', price: 10),
   ];
 }

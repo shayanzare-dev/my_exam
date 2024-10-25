@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../shared/shayan_show_snack_bar.dart';
+import '../../../shared/shayan_show_snack_bar.dart';
 import '../../controller/login_controller.dart';
 
 class MyLoginForm extends GetView<LoginController> {

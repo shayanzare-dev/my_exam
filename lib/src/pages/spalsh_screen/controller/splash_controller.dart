@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 
-import '../../../insfrastucture/route/route_names.dart';
+import '../../../insfrastucture/routes/route_names.dart';
 
 class SplashController extends GetxController {
   void waitForNextPage() async{

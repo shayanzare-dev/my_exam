@@ -1,5 +1,5 @@
-import 'package:exam/src/insfrastucture/route/route_names.dart';
-import 'package:exam/src/insfrastucture/route/route_path.dart';
+import 'package:exam/src/insfrastucture/routes/route_names.dart';
+import 'package:exam/src/insfrastucture/routes/route_path.dart';
 import 'package:exam/src/pages/category_page/commons/category_page_binding.dart';
 import 'package:exam/src/pages/category_page/view/category_page.dart';
 import 'package:exam/src/pages/insert_category_page/commons/insert_category_binding.dart';
@@ -19,7 +19,7 @@ import '../../pages/register_page/commons/splash_binding.dart';
 import '../../pages/register_page/view/register_screen.dart';
 import '../../pages/spalsh_screen/commons/splash_binding.dart';
 
-class RoutePages {
+class RoutePage {
   static List<GetPage> pages = [
     GetPage(
       name: RoutePath.splashScreen,
@@ -38,27 +38,32 @@ class RoutePages {
           ),
         ]),
     GetPage(
-      name: RouteNames.categoryPage,
+      name: RoutePath.categoryPage,
       page: () => const CategoryPage(),
       binding: CategoryPageBinding(),
+      children: [
+        GetPage(
+          name: RoutePath.insertCategoryPage,
+          page: () => const InsertCategoryPage(),
+          binding: InsertCategoryBinding(),
+        ),
+        GetPage(
+          name: RoutePath.itemDetailsPage,
+          page: () => const ItemDeatelsPage(),
+          binding: ItemDeatelsBinding(),
+          children: [
+            GetPage(
+                name: RoutePath.editItemDetailsPage,
+                page: () => const EditItemDeatelsPage(),
+                binding: EditItemDeatelsBinding()),
+            GetPage(
+                name: RoutePath.insertItemDetailsPage,
+                page: () => const InsertItemDeatelsPage(),
+                binding: InsertItemDeatelsBinding(),
+            ),
+          ]
+        ),
+      ]
     ),
-    GetPage(
-      name: RouteNames.itemDeatelsPage,
-      page: () => const ItemDeatelsPage(),
-      binding: ItemDeatelsBinding(),
-    ),
-    GetPage(
-      name: RouteNames.insertCategoryPage,
-      page: () => const InsertCategoryPage(),
-      binding: InsertCategoryBinding(),
-    ),
-    GetPage(
-        name: RouteNames.editItemDeatelsPage,
-        page: () => EditItemDeatelsPage(),
-        binding: EditItemDeatelsBinding()),
-    GetPage(
-        name: RouteNames.insertItemDeatelsPage,
-        page: () => InsertItemDeatelsPage(),
-        binding: InsertItemDeatelsBinding()),
   ];
 }

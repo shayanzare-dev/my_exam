@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../controller/item_deatels_controller.dart';
-
-class ItemDeatelsItem extends GetView<ItemDeatelsController> {
+class ItemDeatelsItem extends StatelessWidget {
   const ItemDeatelsItem(
-      {super.key,required this.itemTitle});
+      {super.key,
+      required this.itemTitle,
+      required this.removeItemDeatelsTap,
+      required this.goToEditItemDeatelsTap,
+      required this.price});
 
   final String itemTitle;
+  final int price;
+  final void Function() removeItemDeatelsTap;
+  final void Function() goToEditItemDeatelsTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       height: 50,
       width: double.infinity,
-      margin: EdgeInsets.all(16),
-      padding: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
           color: Colors.green, borderRadius: BorderRadius.circular(12)),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(itemTitle),
-          SizedBox(
-            height: 60,
-            width: 60,
-            child: IconButton(
-                onPressed: () => controller.removeItemDeatels(itemTitle),
-                icon: Icon(Icons.clear)),
-          )
+          SizedBox(width: 6,),
+          Text('price : $price'),
+          const Spacer(),
+          IconButton(
+              onPressed: removeItemDeatelsTap, icon: const Icon(Icons.clear)),
+          IconButton(
+            onPressed: goToEditItemDeatelsTap,
+            icon: const Icon(Icons.edit),
+          ),
         ],
       ),
     );
-  }
 }

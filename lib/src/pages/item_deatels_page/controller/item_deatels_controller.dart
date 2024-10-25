@@ -1,45 +1,59 @@
-import 'package:exam/src/insfrastucture/commons/data_base.dart';
 import 'package:get/get.dart';
 
-import '../../../insfrastucture/route/route_names.dart';
+import '../../../insfrastucture/commons/data_base.dart';
+import '../../../insfrastucture/routes/route_names.dart';
 import '../models/item_deatel.dart';
 
 class ItemDeatelsController extends GetxController {
-  RxList<ItemDeatel> itemDeatels = DataBase.itemDeatels.obs;
+  RxList<ItemDeatel> itemDetails = DataBase.itemDeatel.obs;
 
-  /* void goBackPage() {
-    Get.back();
-  }*/
   void removeItemDeatels(String title) {
-    final int index = itemDeatels.indexWhere(
-      (element) => element.itemDeatelName == title,
+    final int index = itemDetails.indexWhere(
+      (element) => element.itemTitle == title,
     );
     if (index != -1) {
-      itemDeatels.removeAt(index);
+      itemDetails.removeAt(index);
     }
   }
 
-  void goToInsertItemDeatelsPage() async {
-    final String result = await Get.toNamed(
-      RouteNames.insertItemDeatelsPage,
-    );
-    if (result.isNotEmpty) {
-      // todo
-      //itemDeatels.add(ItemDeatel(id:, itemDeatelName:);
+  Future<void> goToInsertItemDeatelsPage() async {
+    final Map<String, dynamic>? result = await Get.toNamed(
+      RouteNames.insertItemDetailsPage,
+    )?.catchError((e) {
+      print(e);
+    });
+    if (result != null && result.isNotEmpty) {
+      itemDetails.add(ItemDeatel(
+          id: 1, itemTitle: result['title'], price: result['price']));
     } else {
-      print('is empty');
+      print('result is empty');
     }
   }
 
-  void goToEditItemDeatelsPage() async {
-    final String result = await Get.toNamed(
-      RouteNames.editItemDeatelsPage,
-    );
-    if (result.isNotEmpty) {
-      // todo
-      //itemDeatels.add(ItemDeatel(id:, itemDeatelName:);
+  Future<void> goToEditItemDeatelsPage({required ItemDeatel itemDetail}) async {
+    final Map<String, dynamic>? result = await Get.toNamed(
+      RouteNames.editItemDetailsPage,
+      parameters: {
+        'title': itemDetail.itemTitle,
+        'price': itemDetail.price.toString(),
+      },
+    )?.catchError((e) {
+      print(e);
+    });
+    if (result != null && result.isNotEmpty) {
+      final ItemDeatel newItem = ItemDeatel(
+          id: itemDetail.id,
+          itemTitle: result['title'],
+          price: result['price']);
+      itemDetails.add(newItem);
     } else {
-      print('is empty');
+      print('result is empty');
     }
+  }
+
+  @override
+  void dispose() {
+    DataBase.itemDeatel = itemDetails;
+    super.dispose();
   }
 }

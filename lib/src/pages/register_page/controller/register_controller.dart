@@ -3,16 +3,11 @@ import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
   RxBool isShow = true.obs;
-  late final TextEditingController fullNameEditingController;
+  final TextEditingController fullNameEditingController =
+      TextEditingController();
 
-  late final TextEditingController passwordEditingController;
-
-  @override
-  void onInit() {
-    fullNameEditingController = TextEditingController();
-    passwordEditingController = TextEditingController();
-    super.onInit();
-  }
+  final TextEditingController passwordEditingController =
+      TextEditingController();
 
   Widget buttonChangeStatus() => IconButton(
       onPressed: () => isShow.value = !isShow.value,

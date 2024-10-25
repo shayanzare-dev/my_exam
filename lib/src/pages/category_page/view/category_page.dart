@@ -1,8 +1,8 @@
-import 'package:exam/src/pages/category_page/view/widgets/categoty_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controller/category_page_controller.dart';
+import 'widgets/categoty_item.dart';
 
 class CategoryPage extends GetView<CategoryPageController> {
   const CategoryPage({super.key});
@@ -30,7 +30,7 @@ class CategoryPage extends GetView<CategoryPageController> {
                 child: Obx(() => ListView.builder(
                       itemCount: controller.categories.length,
                       itemBuilder: (_, index) => CategoryItem(
-                          onTap: controller.goToItemDeatelsPage,
+                          onTap: controller.goToItemDetailsPage,
                           categoryTitle:
                               controller.categories[index].categoryName),
                     )))

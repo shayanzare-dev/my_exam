@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 class EditItemDeatelsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(
-      () => EditItemDeatelsController(),
-    );
+    final Map<String, String?> itemDetailValue = Get.parameters;
+    Get.lazyPut(() => EditItemDeatelsController(itemDetailValue));
   }
 }

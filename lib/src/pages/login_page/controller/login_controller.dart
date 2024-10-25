@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../insfrastucture/route/route_names.dart';
+import '../../../insfrastucture/routes/route_names.dart';
 
 class LoginController extends GetxController {
   void goToCategoryPage() {
     Get.offAndToNamed(RouteNames.categoryPage);
   }
-
   int id = 0;
   RxBool isShow = true.obs;
+
   TextEditingController fullNameEditingController = TextEditingController();
 
   TextEditingController passwordEditingController = TextEditingController();
@@ -29,6 +29,18 @@ class LoginController extends GetxController {
           ? const Icon(Icons.visibility)
           : const Icon(Icons.visibility_off));
 
+  String? passwordValidator(String? value) {
+    value = value?.trim();
+
+    if (value == null || value.isEmpty) {
+      return 'please enter some password';
+    }
+    if (value.length < 8) {
+      return 'please enter more than 8 char';
+    }
+
+    return null;
+  }
   String? nameValidator(String? value) {
     value = value?.trim();
 
@@ -44,17 +56,5 @@ class LoginController extends GetxController {
 
     return null;
   }
-
-  String? passwordValidator(String? value) {
-    value = value?.trim();
-
-    if (value == null || value.isEmpty) {
-      return 'please enter some password';
-    }
-    if (value.length < 8) {
-      return 'please enter more than 8 char';
-    }
-
-    return null;
-  }
 }
+

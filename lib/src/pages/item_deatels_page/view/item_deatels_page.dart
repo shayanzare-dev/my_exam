@@ -9,37 +9,25 @@ class ItemDeatelsPage extends GetView<ItemDeatelsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-            onPressed: controller.goToInsertItemDeatelsPage,
-            child: Icon(Icons.add),
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          FloatingActionButton(
-            onPressed: controller.goToEditItemDeatelsPage,
-            child: Icon(Icons.edit),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.goToInsertItemDeatelsPage,
+        child: const Icon(Icons.add),
       ),
       appBar: AppBar(
+        backgroundColor: Colors.red,
         title: const Text('item deatels page'),
       ),
       body: SafeArea(child: _body()),
     );
   }
 
-  Widget _body() => Column(
-        children: [
-          Expanded(
-              child: Obx(() => ListView.builder(
-                  itemCount: controller.itemDeatels.length,
-                  itemBuilder: (_, index) => ItemDeatelsItem(
-                      itemTitle:
-                          controller.itemDeatels[index].itemDeatelName)))),
-        ],
-      );
+  Widget _body() => Obx(() => ListView.builder(
+      itemCount: controller.itemDetails.length,
+      itemBuilder: (_, index) => ItemDeatelsItem(
+          price: controller.itemDetails[index].price,
+          itemTitle: controller.itemDetails[index].itemTitle,
+          removeItemDeatelsTap: () => controller
+              .removeItemDeatels(controller.itemDetails[index].itemTitle),
+          goToEditItemDeatelsTap: () => controller.goToEditItemDeatelsPage(
+              itemDetail: controller.itemDetails[index]))));
 }
