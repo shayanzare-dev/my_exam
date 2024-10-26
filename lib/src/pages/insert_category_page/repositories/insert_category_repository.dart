@@ -6,16 +6,18 @@ import 'package:http/http.dart' as http;
 
 import '../../../insfrastucture/commons/repository_urls.dart';
 import '../../../insfrastucture/utils/utils.dart';
-import '../models/register_user_dto.dart';
+import '../models/insert_category_dto.dart';
 
-class RegisterRepository {
-  Future<Either<String, Map<String, dynamic>>> registerUser(
-      {required final RegisterUserDto registerUserDto}) async {
+class InsertCategoryRepository {
+  Future<Either<String, Map<String, dynamic>>> addCategory(
+      {required final InsertCategoryDto insertCategoryDto}) async {
     int? statusCode;
     try {
-      final String body = json.encode(registerUserDto.toJson());
-      final http.Response response = await http.post(RepositoryUrls.addUser,
-          body: body, headers: Utils.headers);
+      final String body = json.encode(insertCategoryDto.toJson());
+      final http.Response response = await http.post(
+          RepositoryUrls.addCategories,
+          body: body,
+          headers: Utils.headers);
       statusCode = response.statusCode;
       if (statusCode == 201) {
         final Map<String, dynamic> result = json.decode(response.body);

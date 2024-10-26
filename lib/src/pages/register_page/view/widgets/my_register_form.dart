@@ -7,7 +7,7 @@ import '../../controller/register_controller.dart';
 
 class MyRegisterForm extends GetView<RegisterController> {
 
-  MyRegisterForm({super.key});
+  const MyRegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) => Form(

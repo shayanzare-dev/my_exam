@@ -1,13 +1,16 @@
+import 'dart:core';
+
 import 'package:either_dart/either.dart';
-import 'package:exam/src/pages/shared/shayan_show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../insfrastucture/routes/route_names.dart';
+import '../../shared/shayan_show_snack_bar.dart';
 import '../models/user_view_model.dart';
 import '../repositories/login_repository.dart';
 
 class LoginController extends GetxController {
+  List<UserViewModel> userList = [];
   RxBool isShow = true.obs;
   RxBool isLoading = false.obs;
   final LoginRepository _repository = LoginRepository();
@@ -19,22 +22,30 @@ class LoginController extends GetxController {
 
   Future<void> _loginUser() async {
     isLoading.value = true;
-    final Either<String, UserViewModel> searchUser =
-        await _repository.searchUser(
-            userName: userNameController.text,
-            password: passwordController.text);
-    searchUser.fold((exception) {
+    final Either<String, List<UserViewModel>> resultOrException =
+        await _repository.getUsers();
+    resultOrException.fold((exception) {
       isLoading.value = false;
       shayanShowSnackBar(content1: 'login page', content2: exception);
-    }, (user) {
+    }, (users) {
       isLoading.value = false;
-      print('user = $user');
-      goToCategoryPage();
+      userList = users;
     });
+    final bool isUserNameFound =
+        userList.any((user) => user.userName == userNameController.text);
+    final bool isPasswordFound =
+        userList.any((user) => user.password == passwordController.text);
+    if (isUserNameFound && isPasswordFound) {
+      goToCategoryPage();
+    } else {
+      shayanShowSnackBar(content1: 'login page', content2: 'not found');
+    }
   }
 
   void goToCategoryPage() {
-    Get.offAndToNamed(RouteNames.categoryPage, parameters: {});
+    Get.offAndToNamed(RouteNames.categoryPage, parameters: {
+      'userName': userNameController.text,
+    });
   }
 
   Future<void> goToRegisterPage() async {

@@ -14,8 +14,8 @@ class CategoryItem extends StatelessWidget {
       child: Container(
         height: 50,
         width: double.infinity,
-        margin: EdgeInsets.all(16),
-        padding: EdgeInsets.all(16),
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
             color: Colors.green, borderRadius: BorderRadius.circular(12)),
         child: Center(child: Text(categoryTitle)),

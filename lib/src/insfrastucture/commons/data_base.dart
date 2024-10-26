@@ -1,10 +1,10 @@
-import '../../pages/category_page/models/category.dart';
+import '../../pages/category_page/models/category_view_model.dart';
 import '../../pages/item_deatels_page/models/item_deatel.dart';
 
 class DataBase {
-  static List<Category> categories = <Category>[
-    const Category(id: 1, categoryName: 'sussage'),
-    const Category(id: 2, categoryName: 'banee'),
+  static List<CategoryViewModel> categories = <CategoryViewModel>[
+    const CategoryViewModel(id: 1, categoryName: 'sussage', totalPrice: 0),
+    const CategoryViewModel(id: 2, categoryName: 'banee', totalPrice: 0),
   ];
 
   static List<ItemDeatel> itemDeatel = <ItemDeatel>[

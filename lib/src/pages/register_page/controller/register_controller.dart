@@ -16,6 +16,13 @@ class RegisterController extends GetxController {
       TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  @override
+  void dispose() {
+    super.dispose();
+    fullNameEditingController.dispose();
+    passwordEditingController.dispose();
+  }
+
   Future<void> registerUser() async {
     isLoading.value = true;
     final RegisterUserDto userDto = RegisterUserDto(

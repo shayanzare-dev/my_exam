@@ -12,19 +12,34 @@ class InsertCategoryPage extends GetView<InsertCategoryController> {
         title: const Text('Insert Category Page'),
         centerTitle: true,
       ),
-      body: SafeArea(child: _body()),
+      body: SafeArea(child: _body(context)),
     );
   }
 
-  Widget _body() => Column(
+  Widget _body(BuildContext context) => Column(
         children: [
-          TextField(
-            controller: controller.insertCategoryController,
-            decoration: InputDecoration(labelText: 'input_'),
-          ),
+          Form(
+              key: controller.formKey,
+              child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) => controller.nameValidator(value),
+                      controller: controller.insertCategoryController,
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)),
+                        border: OutlineInputBorder(),
+                        hintText: 'add a category..',
+                      ),
+                    ),
+                  ))),
           ElevatedButton(
-              onPressed: controller.backToPage,
-              child: const Text('back the page'))
+              onPressed: () => controller.submitValidator(context),
+              child: const Text('add'))
         ],
       );
 }

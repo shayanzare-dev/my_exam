@@ -8,21 +8,19 @@ import 'package:http/http.dart' as http;
 import '../models/user_view_model.dart';
 
 class LoginRepository {
-  Future<Either<String, UserViewModel>> searchUser(
-      {required String userName, required String password}) async {
+  Future<Either<String, List<UserViewModel>>> getUsers() async {
     int? statusCode;
     try {
-      final http.Response response = await http.get(
-          RepositoryUrls.filterUsers(userName: userName, password: password));
-      final Map<String, dynamic> jsonData = json.decode(response.body);
+      final http.Response response = await http.get(RepositoryUrls.getUser);
+      final List<dynamic> jsonData = json.decode(response.body);
       statusCode = response.statusCode;
-      if (statusCode == 200 /* && jsonData.isNotEmpty*/) {
-        final UserViewModel user = UserViewModel.fromJson(json: jsonData);
+      if (statusCode == 200) {
+        final List<UserViewModel> users = castData(jsonData);
         print('left is right ');
-        return Right(user);
+        return Right(users);
       } else {
         print('left is runnig ');
-        return Left('user not found , status code => $statusCode');
+        return Left('status code => $statusCode');
       }
     } on SocketException {
       return const Left('there is\'nt connect to the internet');
@@ -35,4 +33,7 @@ class LoginRepository {
           'something went wrong status code: $statusCode , error-> ${e.toString()}');
     }
   }
+
+  List<UserViewModel> castData(List<dynamic> jsonData) =>
+      jsonData.map((json) => UserViewModel.fromJson(json: json)).toList();
 }
