@@ -1,25 +1,50 @@
+import 'package:either_dart/either.dart';
+import 'package:exam/src/pages/shared/shayan_show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../insfrastucture/routes/route_names.dart';
+import '../models/user_view_model.dart';
+import '../repositories/login_repository.dart';
 
 class LoginController extends GetxController {
-  void goToCategoryPage() {
-    Get.offAndToNamed(RouteNames.categoryPage);
-  }
-  int id = 0;
   RxBool isShow = true.obs;
+  RxBool isLoading = false.obs;
+  final LoginRepository _repository = LoginRepository();
 
-  TextEditingController fullNameEditingController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
 
-  TextEditingController passwordEditingController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Future<void> _loginUser() async {
+    isLoading.value = true;
+    final Either<String, UserViewModel> searchUser =
+        await _repository.searchUser(
+            userName: userNameController.text,
+            password: passwordController.text);
+    searchUser.fold((exception) {
+      isLoading.value = false;
+      shayanShowSnackBar(content1: 'login page', content2: exception);
+    }, (user) {
+      isLoading.value = false;
+      print('user = $user');
+      goToCategoryPage();
+    });
+  }
+
+  void goToCategoryPage() {
+    Get.offAndToNamed(RouteNames.categoryPage, parameters: {});
+  }
 
   Future<void> goToRegisterPage() async {
-    final Map<String, String> result = await Get.toNamed(RouteNames.register);
-    if ((result['userName']?.isNotEmpty ?? false) &&
-        (result['password']?.isNotEmpty ?? false)) {
-      fullNameEditingController.text = result['userName']!;
-      passwordEditingController.text = result['password']!;
+    final result = await Get.toNamed(RouteNames.register);
+    if (result != null && result.isNotEmpty) {
+      final UserViewModel newUser = UserViewModel.fromJson(json: result);
+      userNameController.text = newUser.userName;
+      passwordController.text = newUser.password;
+    } else {
+      print('new user is empty');
     }
   }
 
@@ -41,6 +66,13 @@ class LoginController extends GetxController {
 
     return null;
   }
+
+  void submitValidator(BuildContext context) {
+    if ((formKey.currentState?.validate() ?? false)) {
+      _loginUser();
+    }
+  }
+
   String? nameValidator(String? value) {
     value = value?.trim();
 
@@ -53,8 +85,6 @@ class LoginController extends GetxController {
     if (value.contains(' ')) {
       return 'must don\'t have any spaces';
     }
-
     return null;
   }
 }
-

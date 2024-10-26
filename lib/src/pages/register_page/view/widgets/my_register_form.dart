@@ -1,16 +1,17 @@
+import 'package:exam/src/pages/shared/shayan_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../insfrastucture/utils/utils.dart';
 import '../../controller/register_controller.dart';
 
 class MyRegisterForm extends GetView<RegisterController> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   MyRegisterForm({super.key});
 
   @override
   Widget build(BuildContext context) => Form(
-        key: _formKey,
+        key: controller.formKey,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
@@ -33,7 +34,7 @@ class MyRegisterForm extends GetView<RegisterController> {
                 ),
                 const SizedBox(height: 16),
                 const Text('PASSWORD'),
-                _verticalGap(),
+                Utils.verticalGap,
                 Obx(
                   () => TextFormField(
                     obscureText: controller.isShow.value,
@@ -50,23 +51,20 @@ class MyRegisterForm extends GetView<RegisterController> {
                   ),
                 ),
                 Center(
-                  child: ElevatedButton(
-                      onPressed: () => submitValidator(context),
-                      child: const Text('Back to Login')),
+                  child: controller.isLoading.value
+                      ? ElevatedButton(
+                          onPressed: null,
+                          child: Transform.scale(
+                            scale: 0.5,
+                            child: shayanProgressIndicator(),
+                          ))
+                      : ElevatedButton(
+                          onPressed: () => controller.submitValidator(context),
+                          child: const Text('Back to Login')),
                 ),
               ],
             ),
           ),
         ),
-      );
-
-  void submitValidator(BuildContext context) {
-    if ((_formKey.currentState?.validate() ?? false)) {
-      controller.backToLogin();
-    } else {}
-  }
-
-  Widget _verticalGap() => const SizedBox(
-        height: 12,
       );
 }

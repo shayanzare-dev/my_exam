@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 void shayanShowSnackBar(
     {required String content1,
     required String content2,
-    required Icon icon,
+    Icon? icon,
     Color? backgroundColor}) {
   Get.snackbar(
+    duration: const Duration(milliseconds: 1000),
     backgroundColor: backgroundColor,
     content1,
     content2,

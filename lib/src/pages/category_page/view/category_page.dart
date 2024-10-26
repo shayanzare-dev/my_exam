@@ -22,19 +22,12 @@ class CategoryPage extends GetView<CategoryPageController> {
     );
   }
 
-  Widget _body() => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-                child: Obx(() => ListView.builder(
-                      itemCount: controller.categories.length,
-                      itemBuilder: (_, index) => CategoryItem(
-                          onTap: controller.goToItemDetailsPage,
-                          categoryTitle:
-                              controller.categories[index].categoryName),
-                    )))
-          ],
-        ),
-      );
+  Widget _body() => Obx(() => ListView.builder(
+    padding: const EdgeInsets.all(16.0),
+    itemCount: controller.categories.length,
+        itemBuilder: (_, index) => CategoryItem(
+            onTap: controller.goToItemDetailsPage,
+            categoryTitle:
+                controller.categories[index].categoryName),
+      ));
 }

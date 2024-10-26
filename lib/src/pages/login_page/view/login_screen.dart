@@ -18,7 +18,5 @@ class LoginScreen extends GetView<SplashController> {
     );
   }
 
-  Widget _body() => Column(
-        children: [MyLoginForm()],
-      );
+  Widget _body() => const MyLoginForm();
 }
