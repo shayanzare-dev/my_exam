@@ -49,7 +49,7 @@ class RegisterController extends GetxController {
   }
 
   void backToLogin(Map<String, dynamic> data) =>
-      Get.back<Map<String, dynamic>>(result: data);
+      Get.back(result: data);
 
   Widget buttonChangeStatus() => IconButton(
       onPressed: () => isShow.value = !isShow.value,

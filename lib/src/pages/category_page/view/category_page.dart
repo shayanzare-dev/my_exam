@@ -29,22 +29,6 @@ class CategoryPage extends GetView<CategoryController> {
     );
   }
 
-  Widget _body() {
-    if (controller.isLoading.value) {
-      return Center(
-        child: shayanProgressIndicator(),
-      );
-    } else if (controller.isRetryMode.value) {
-      return Center(
-        child: _retry(),
-      );
-    } else if (controller.categoryList.isEmpty) {
-      return const Center(child: Text('empty categories'));
-    } else {
-      return _categories();
-    }
-  }
-
   Widget _retry() => Center(
         child: FloatingActionButton(
           onPressed: controller.getCategories,
@@ -52,11 +36,26 @@ class CategoryPage extends GetView<CategoryController> {
         ),
       );
 
+  Widget _body() {
+    if (controller.isLoading.value) {
+      return Center(
+        child: shayanProgressIndicator(),
+      );
+    } else if (controller.isRetryMode.value) {
+      return Center(child: _retry());
+    } else if (controller.categoryList.isEmpty) {
+      return const Center(child: Text('empty categories'));
+    } else {
+      return _categories();
+    }
+  }
+
   Widget _categories() => ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemCount: controller.categoryList.length,
         itemBuilder: (_, index) => CategoryItem(
-            onTap: controller.goToItemDetailsPage,
+            onTap: () => controller.goToItemDetailsPage(
+                id: controller.categoryList[index].id),
             categoryTitle: controller.categoryList[index].categoryName),
       );
 }

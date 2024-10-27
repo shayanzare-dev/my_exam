@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../controller/insert_item_deatels_controller.dart';
+import '../controllers/insert_item_deatels_controller.dart';
 
-class InsertItemDeatelsPage extends GetView<InsertItemDeatelsController> {
-  const InsertItemDeatelsPage({super.key});
+class InsertItemDetailsPage extends GetView<InsertItemDetailController> {
+  const InsertItemDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class InsertItemDeatelsPage extends GetView<InsertItemDeatelsController> {
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) => controller.nameValidator(value),
-                      controller: controller.titleController,
+                      controller: controller.detailNameController,
                       decoration: const InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.green)),

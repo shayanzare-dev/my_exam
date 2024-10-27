@@ -1,10 +1,10 @@
 import 'package:exam/src/pages/edit_item_deatels_page/controller/edit_item_deatels_controller.dart';
 import 'package:get/get.dart';
 
-class EditItemDeatelsBinding extends Bindings {
+class EditItemDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    final Map<String, String?> itemDetailValue = Get.parameters;
-    Get.lazyPut(() => EditItemDeatelsController(itemDetailValue));
+   final int? id = int.tryParse(Get.parameters['id'] ?? '');
+    Get.lazyPut(() => EditItemDetailsController(id));
   }
 }

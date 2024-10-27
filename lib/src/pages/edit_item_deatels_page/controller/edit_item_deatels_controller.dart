@@ -1,21 +1,33 @@
+import 'package:either_dart/either.dart';
+import 'package:exam/src/pages/edit_item_deatels_page/models/edit_item_details_dto.dart';
+import 'package:exam/src/pages/shared/shayan_show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EditItemDeatelsController extends GetxController {
-  final Map<String, String?> itemDetailValue;
+import '../models/edit_item_details_view_model.dart';
+import '../repositories/edit_details_repository.dart';
 
-  EditItemDeatelsController(this.itemDetailValue);
+class EditItemDetailsController extends GetxController {
+  final int? id;
 
-  late final TextEditingController titleController;
-  late final TextEditingController priceController;
-  final GlobalKey<FormState> formKey = GlobalKey();
+  EditItemDetailsController(this.id);
 
   @override
   void onInit() {
     super.onInit();
-    titleController = TextEditingController(text: itemDetailValue['title']);
-    priceController = TextEditingController(text: itemDetailValue['price']);
+    if (id != null) {
+      getDetailById(id!);
+    }
   }
+
+  final EditDetailsRepository _repository = EditDetailsRepository();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey();
+  RxBool isLoading = false.obs,
+      isRetryMode = false.obs,
+      isEditLoading = false.obs;
+  late EditItemDetailsViewModel editItemDetailsViewModel;
 
   String? nameValidator(String? value) {
     value = value?.trim();
@@ -26,10 +38,6 @@ class EditItemDeatelsController extends GetxController {
     if (value.length < 2) {
       return 'please enter more than 2 characters';
     }
-    if (value.contains(' ')) {
-      return 'must don\'t have any spaces';
-    }
-
     return null;
   }
 
@@ -39,18 +47,60 @@ class EditItemDeatelsController extends GetxController {
     if (value == null || value.isEmpty) {
       return 'please enter some number';
     }
-    if (value.contains(' ')) {
-      return 'must don\'t have any spaces';
-    }
     return null;
   }
 
-  void editItemDetails() => Get.back<Map<String, dynamic>>(
-        result: {
-          'title': titleController.text,
-          'price': int.tryParse(priceController.text) ?? 0,
-        },
-      );
+  Future<void> getDetailById(int id) async {
+    isLoading.value = true;
+    isRetryMode.value = false;
+    final Either<String, EditItemDetailsViewModel> resultOrException =
+        await _repository.getDetailById(id: id);
+    isLoading.value = false;
+
+    resultOrException.fold(
+      (exception) {
+        isRetryMode.value = true;
+        shayanShowSnackBar(content1: 'get detail', content2: exception);
+      },
+      (value) {
+        editItemDetailsViewModel = EditItemDetailsViewModel(
+            id: value.id,
+            categoryId: value.categoryId,
+            detailsName: value.detailsName,
+            price: value.price);
+        titleController.text = editItemDetailsViewModel.detailsName;
+        priceController.text = editItemDetailsViewModel.price.toString();
+      },
+    );
+  }
+
+  Future<void> _editDetailById({required int id}) async {
+    final EditItemDetailsDto newItemDetail = EditItemDetailsDto(
+        detailsName: titleController.text,
+        categoryId: 0,
+        price: int.parse(priceController.text));
+    isEditLoading.value = true;
+    final Either<String, Map<String, dynamic>> resultOrException =
+        await _repository.editDetailById(
+            detailId: id, editItemDetailDto: newItemDetail);
+    isEditLoading.value = false;
+
+    resultOrException.fold(
+      (exception) {
+        isLoading.value = false;
+        shayanShowSnackBar(content1: 'edit detail', content2: exception);
+      },
+      (Map<String,dynamic> right) {
+        Get.back(result: right);
+      },
+    );
+  }
+
+  void submitValidator(BuildContext context, {required int detailId}) {
+    if ((formKey.currentState?.validate() ?? false)) {
+      _editDetailById(id: detailId);
+    }
+  }
 
   @override
   void dispose() {

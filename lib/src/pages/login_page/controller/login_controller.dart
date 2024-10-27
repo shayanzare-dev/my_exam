@@ -23,7 +23,9 @@ class LoginController extends GetxController {
   Future<void> _loginUser() async {
     isLoading.value = true;
     final Either<String, List<UserViewModel>> resultOrException =
-        await _repository.getUsers();
+        await _repository.getUser(
+            userName: userNameController.text,
+            password: passwordController.text);
     resultOrException.fold((exception) {
       isLoading.value = false;
       shayanShowSnackBar(content1: 'login page', content2: exception);

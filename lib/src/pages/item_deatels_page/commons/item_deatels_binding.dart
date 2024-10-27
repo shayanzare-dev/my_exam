@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 class ItemDeatelsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ItemDeatelsController(),);
+    final int? id = int.tryParse(Get.parameters['id'] ?? '');
+    Get.lazyPut(
+      () => ItemDetailsController(id),
+    );
   }
 }

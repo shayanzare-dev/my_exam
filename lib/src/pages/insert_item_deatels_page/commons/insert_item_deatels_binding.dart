@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
 
-import '../controller/insert_item_deatels_controller.dart';
+import '../controllers/insert_item_deatels_controller.dart';
 
-class InsertItemDeatelsBinding extends Bindings {
+class InsertItemDetailsBinding extends Bindings {
   @override
   void dependencies() {
+    final int? categoryId = int.tryParse(Get.parameters['categoryId'] ?? '');
     Get.lazyPut(
-      () => InsertItemDeatelsController(),
+      () => InsertItemDetailController(categoryId),
     );
   }
 }

@@ -8,18 +8,20 @@ import 'package:http/http.dart' as http;
 import '../models/user_view_model.dart';
 
 class LoginRepository {
-  Future<Either<String, List<UserViewModel>>> getUsers() async {
+  Future<Either<String, List<UserViewModel>>> getUser({
+    required String userName,
+    required String password,
+  }) async {
     int? statusCode;
     try {
-      final http.Response response = await http.get(RepositoryUrls.getUser);
+      final http.Response response = await http
+          .get(RepositoryUrls.getUser(userName: userName, password: password));
       final List<dynamic> jsonData = json.decode(response.body);
       statusCode = response.statusCode;
       if (statusCode == 200) {
         final List<UserViewModel> users = castData(jsonData);
-        print('left is right ');
         return Right(users);
       } else {
-        print('left is runnig ');
         return Left('status code => $statusCode');
       }
     } on SocketException {

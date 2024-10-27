@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../controller/edit_item_deatels_controller.dart';
 
-class EditItemDeatelsPage extends GetView<EditItemDeatelsController> {
+class EditItemDeatelsPage extends GetView<EditItemDetailsController> {
   const EditItemDeatelsPage({super.key});
 
   @override
@@ -13,11 +13,28 @@ class EditItemDeatelsPage extends GetView<EditItemDeatelsController> {
       appBar: AppBar(
         title: const Text('edit item'),
       ),
-      body: SafeArea(child: _body()),
+      body: SafeArea(child: Obx(() => _body(context))),
     );
   }
 
-  Widget _body() => Padding(
+  Widget _body(BuildContext context) {
+    if (controller.isLoading.value) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (controller.isRetryMode.value) {
+      return _retry();
+    }
+    return _editView(context);
+  }
+
+  Widget _retry() => Center(
+        child: ElevatedButton(
+          onPressed: () =>
+              controller.getDetailById(controller.editItemDetailsViewModel.id),
+          child: const Text('retry'),
+        ),
+      );
+
+  Widget _editView(BuildContext context) => Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
@@ -34,7 +51,8 @@ class EditItemDeatelsPage extends GetView<EditItemDeatelsController> {
                       decoration: const InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.green)),
-                          border: OutlineInputBorder(),),
+                          border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.text,
                     ),
                   ),
@@ -57,7 +75,9 @@ class EditItemDeatelsPage extends GetView<EditItemDeatelsController> {
             ),
             Center(
               child: TextButton(
-                  onPressed: controller.editItemDetails,
+                  onPressed: () => controller.submitValidator(
+                      detailId: controller.editItemDetailsViewModel.id,
+                      context),
                   child: const Text('edit')),
             ),
           ],

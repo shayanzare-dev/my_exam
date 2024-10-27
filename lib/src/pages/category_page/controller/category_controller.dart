@@ -12,7 +12,6 @@ class CategoryController extends GetxController {
   CategoryController(this.userName);
 
   final CategoryRepository _repository = CategoryRepository();
-  int idCount = 0;
   RxBool isLoading = false.obs, isRetryMode = false.obs;
   RxList<CategoryViewModel> categoryList = <CategoryViewModel>[].obs;
 
@@ -37,10 +36,9 @@ class CategoryController extends GetxController {
     });
   }
 
-  void goToItemDetailsPage() {
-    Get.toNamed(
-      RouteNames.itemDetailsPage,
-    )?.catchError((e) {
+  void goToItemDetailsPage({required int id}) {
+    Get.toNamed(RouteNames.itemDetailsPage, parameters: {'id': '$id'})
+        ?.catchError((e) {
       print(e);
     });
     /*if (result != null && result.isNotEmpty) {
@@ -54,7 +52,7 @@ class CategoryController extends GetxController {
     final Map<String, dynamic> result = await Get.toNamed(
       RouteNames.insertCategoryPage,
     )?.catchError((e) {
-      print('error isss = $e');
+      print('error is = $e');
     });
     if (result.isNotEmpty) {
       final CategoryViewModel newCategory =

@@ -55,11 +55,11 @@ class RoutePage {
             GetPage(
                 name: RoutePath.editItemDetailsPage,
                 page: () => const EditItemDeatelsPage(),
-                binding: EditItemDeatelsBinding()),
+                binding: EditItemDetailsBinding()),
             GetPage(
                 name: RoutePath.insertItemDetailsPage,
-                page: () => const InsertItemDeatelsPage(),
-                binding: InsertItemDeatelsBinding(),
+                page: () => const InsertItemDetailsPage(),
+                binding: InsertItemDetailsBinding(),
             ),
           ]
         ),
