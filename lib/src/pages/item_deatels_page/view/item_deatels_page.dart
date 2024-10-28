@@ -16,6 +16,10 @@ class ItemDeatelsPage extends GetView<ItemDetailsController> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: controller.backToCategoryPage,
+        ),
         backgroundColor: Colors.red,
         title: const Text('item details page'),
       ),

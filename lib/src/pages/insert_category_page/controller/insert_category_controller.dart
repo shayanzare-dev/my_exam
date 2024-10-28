@@ -16,8 +16,9 @@ class InsertCategoryController extends GetxController {
 
   Future<void> addCategory() async {
     isLoading.value = true;
-    final InsertCategoryDto categoryDto =
-        InsertCategoryDto(categoryName: insertCategoryController.text);
+    final InsertCategoryDto categoryDto = InsertCategoryDto(
+      categoryName: insertCategoryController.text,
+    );
     final Either<String, Map<String, dynamic>> resultOrException =
         await _repository.addCategory(insertCategoryDto: categoryDto);
     resultOrException.fold(
@@ -39,7 +40,7 @@ class InsertCategoryController extends GetxController {
 
   void submitValidator(BuildContext context) {
     if ((formKey.currentState?.validate() ?? false)) {
-     addCategory();
+      addCategory();
     }
   }
 

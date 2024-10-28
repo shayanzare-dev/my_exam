@@ -36,13 +36,23 @@ class CategoryController extends GetxController {
     });
   }
 
-  void goToItemDetailsPage({required int id}) {
-    Get.toNamed(RouteNames.itemDetailsPage, parameters: {'id': '$id'})
-        ?.catchError((e) {
+  Future<void> goToItemDetailsPage({required int id}) async {
+    final result =
+        await Get.toNamed(RouteNames.itemDetailsPage, parameters: {'id': '$id'})
+            ?.catchError((e) {
       print(e);
     });
+
+    /// Todo: patch , loading , then edit local category on List
+    /// 
+    if (result != null) {
+      print('value of item details $result');
+    }
   }
 
+  Future<void> editCategory()async{
+    final Either<String,Map<String,dynamic>> _resultOrException = await _repository.editCategory(categoryId: , categoryDto: categoryDto)
+  }
   Future<void> goToInsertCategoryPage() async {
     final Map<String, dynamic> result = await Get.toNamed(
       RouteNames.insertCategoryPage,

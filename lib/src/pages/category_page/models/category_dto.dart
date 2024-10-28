@@ -1,9 +1,9 @@
-class InsertCategoryDto {
+class CategoryDto {
   final String categoryName;
   final double totalPrice;
   final List itemDetailsIds;
 
-  InsertCategoryDto({
+  CategoryDto({
     required this.categoryName,
     this.totalPrice = 0,
   }) : itemDetailsIds = [];

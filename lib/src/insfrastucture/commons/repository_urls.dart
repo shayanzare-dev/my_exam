@@ -20,11 +20,15 @@ class RepositoryUrls {
   static Uri getDetailsByCategoryId({required int categoryId}) =>
       Uri.parse('http://localhost:3000/details?categoryId=$categoryId');
 
+  static Uri editCategory({required int id}) =>
+      Uri.http(_baseUrl, '$_categories/$id');
+
   static Uri getDetailById({required int id}) =>
       Uri.http(_baseUrl, '$_details/$id');
 
   static Uri deleteDetail({required int detailId}) =>
       Uri.http(_baseUrl, '$_details/$detailId');
+
   static Uri editDetailById({required int detailId}) =>
       Uri.http(_baseUrl, '$_details/$detailId');
   static Uri addItemDetail = Uri.http(_baseUrl, _details);

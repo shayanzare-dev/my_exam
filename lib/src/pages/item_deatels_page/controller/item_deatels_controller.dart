@@ -25,6 +25,7 @@ class ItemDetailsController extends GetxController {
   }
 
   RxList<DetailsViewModel> itemDetailsList = <DetailsViewModel>[].obs;
+  int totalPrice = 0;
 
   Future<void> getDetails({required int categoryId}) async {
     isLoading.value = true;
@@ -39,6 +40,17 @@ class ItemDetailsController extends GetxController {
       isRetryMode.value = false;
       itemDetailsList.value = details;
     });
+
+    totalPrice = itemDetailsList.fold(
+        totalPrice, (previousValue, element) => previousValue += element.price);
+  }
+
+  void backToCategoryPage() {
+    Map<String, dynamic> result = {
+      'totalPrice': totalPrice,
+      'categoryId': categoryId
+    };
+    Get.back(result: result);
   }
 
   Future<void> deleteItemDetails(int detailId) async {

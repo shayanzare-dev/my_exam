@@ -54,6 +54,7 @@ class CategoryPage extends GetView<CategoryController> {
         padding: const EdgeInsets.all(16.0),
         itemCount: controller.categoryList.length,
         itemBuilder: (_, index) => CategoryItem(
+          totalPrice: controller.categoryList[index].totalPrice,
             onTap: () => controller.goToItemDetailsPage(
                 id: controller.categoryList[index].id),
             categoryTitle: controller.categoryList[index].categoryName),
