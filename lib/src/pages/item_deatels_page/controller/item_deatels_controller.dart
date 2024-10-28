@@ -58,7 +58,8 @@ class ItemDetailsController extends GetxController {
   }
 
   Future<void> goToInsertItemDetailsPage() async {
-    final  Map<String, dynamic>? result = await Get.toNamed(RouteNames.insertItemDetailsPage,
+    final Map<String, dynamic>? result = await Get.toNamed(
+        RouteNames.insertItemDetailsPage,
         parameters: {'categoryId': '$categoryId'})?.catchError((e) {
       print('error = $e');
     });
@@ -66,22 +67,27 @@ class ItemDetailsController extends GetxController {
       final DetailsViewModel newDetail =
           DetailsViewModel.fromJson(json: result);
       itemDetailsList.add(newDetail);
-        } else {
+    } else {
       print('result is empty');
     }
   }
 
-  Future<void> goToEditItemDetailPage(
-      {required int id}) async {
-    final Map<String,dynamic>? result = await Get.toNamed(
-      RouteNames.editItemDetailsPage,
-      parameters: {'id': '$id'}
-    )?.catchError((e) {
+  Future<void> goToEditItemDetailPage({required int idd}) async {
+    final Map<String, dynamic>? result = await Get.toNamed(
+        RouteNames.editItemDetailsPage,
+        parameters: {'id': '$idd'})?.catchError((e) {
       print(e);
     });
     if (result != null && result.isNotEmpty) {
-      final DetailsViewModel detailsViewModel = DetailsViewModel.fromJson(json: result);
-      itemDetailsList.add(detailsViewModel);
+      final DetailsViewModel detailsViewModel =
+          DetailsViewModel.fromJson(json: result);
+      final int index = itemDetailsList.indexWhere(
+        (element) => element.id == detailsViewModel.id,
+      );
+      final bool isDetailItemFound = index != -1;
+      if (isDetailItemFound) {
+        itemDetailsList[index] = detailsViewModel;
+      }
     } else {
       print('edit item is empty');
     }

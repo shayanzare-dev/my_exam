@@ -41,11 +41,6 @@ class CategoryController extends GetxController {
         ?.catchError((e) {
       print(e);
     });
-    /*if (result != null && result.isNotEmpty) {
-       // repositories.add(Category(id: ++idCount, categoryName: result));
-    } else {
-      print('is empty');
-    }*/
   }
 
   Future<void> goToInsertCategoryPage() async {

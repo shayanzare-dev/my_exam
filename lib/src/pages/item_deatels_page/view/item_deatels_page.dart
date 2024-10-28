@@ -52,5 +52,5 @@ class ItemDeatelsPage extends GetView<ItemDetailsController> {
           removeItemDeatelsTap: () => controller
               .deleteItemDetails(controller.itemDetailsList[index].id),
           goToEditItemDeatelsTap: () => controller.goToEditItemDetailPage(
-              id: controller.itemDetailsList[index].id)));
+              idd: controller.itemDetailsList[index].id)));
 }

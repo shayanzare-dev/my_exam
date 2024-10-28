@@ -29,7 +29,7 @@ class EditItemDeatelsPage extends GetView<EditItemDetailsController> {
   Widget _retry() => Center(
         child: ElevatedButton(
           onPressed: () =>
-              controller.getDetailById(controller.editItemDetailsViewModel.id),
+              controller.getDetailById(controller.id!),
           child: const Text('retry'),
         ),
       );
@@ -76,7 +76,7 @@ class EditItemDeatelsPage extends GetView<EditItemDetailsController> {
             Center(
               child: TextButton(
                   onPressed: () => controller.submitValidator(
-                      detailId: controller.editItemDetailsViewModel.id,
+                      detailId: controller.id!,
                       context),
                   child: const Text('edit')),
             ),

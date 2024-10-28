@@ -23,11 +23,11 @@ class EditItemDetailsController extends GetxController {
   final EditDetailsRepository _repository = EditDetailsRepository();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  int categoryId = 0;
   final GlobalKey<FormState> formKey = GlobalKey();
   RxBool isLoading = false.obs,
       isRetryMode = false.obs,
       isEditLoading = false.obs;
-  late EditItemDetailsViewModel editItemDetailsViewModel;
 
   String? nameValidator(String? value) {
     value = value?.trim();
@@ -63,22 +63,28 @@ class EditItemDetailsController extends GetxController {
         shayanShowSnackBar(content1: 'get detail', content2: exception);
       },
       (value) {
-        editItemDetailsViewModel = EditItemDetailsViewModel(
-            id: value.id,
-            categoryId: value.categoryId,
-            detailsName: value.detailsName,
-            price: value.price);
-        titleController.text = editItemDetailsViewModel.detailsName;
-        priceController.text = editItemDetailsViewModel.price.toString();
-      },
+        // editItemDetailsViewModel = EditItemDetailsViewModel(
+        //     id: value.id,
+        //     categoryId: value.categoryId,
+        //     detailsName: value.detailsName,
+        //     price: value.price);
+        titleController.text = value.detailsName;
+        priceController.text = value.price.toString();
+        categoryId = value.categoryId;
+        },
     );
   }
 
   Future<void> _editDetailById({required int id}) async {
     final EditItemDetailsDto newItemDetail = EditItemDetailsDto(
         detailsName: titleController.text,
-        categoryId: 0,
+        categoryId: categoryId,
         price: int.parse(priceController.text));
+
+    // final EditItemDetailsDto newItemDetail = EditItemDetailsDto(
+    //     detailsName: editItemDetailsViewModel.detailsName,
+    //     categoryId: editItemDetailsViewModel.categoryId,
+    //     price: editItemDetailsViewModel.price);
     isEditLoading.value = true;
     final Either<String, Map<String, dynamic>> resultOrException =
         await _repository.editDetailById(
@@ -90,7 +96,7 @@ class EditItemDetailsController extends GetxController {
         isLoading.value = false;
         shayanShowSnackBar(content1: 'edit detail', content2: exception);
       },
-      (Map<String,dynamic> right) {
+      (Map<String, dynamic> right) {
         Get.back(result: right);
       },
     );
